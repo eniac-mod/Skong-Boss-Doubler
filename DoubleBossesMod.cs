@@ -7,6 +7,7 @@ using System.Collections;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Device;
 using UnityEngine.SceneManagement;
 
 
@@ -26,7 +27,7 @@ namespace Silksong.Mods.DoubleBossesMod
 
         //Method call for enemy doubler, and various exclusions for objects I do not want duplicated
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        { 
+        {
             foreach (var fsm in FindObjectsOfType<PlayMakerFSM>())
             {
                 if (scene.name == "Cog_Dancers" || scene.name == "Slab_10b" || scene.name == "Dock_09" || scene.name == "Shellwood_18")
@@ -46,7 +47,7 @@ namespace Silksong.Mods.DoubleBossesMod
                     fsm.name += "CLONE";
                 }
             }
-            
+
         }
 
         //Makes the First Sinner work because it's spawning is weird
@@ -173,7 +174,7 @@ namespace Silksong.Mods.DoubleBossesMod
         //Override doubler originally for Widow. I don't why the default code didn't work for this, and I don't know why this works as a solution, but it does.
         //Also a lot of other random bosses like Signis and Gron???? Why????
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(PlayMakerFSM), "OnEnable")] 
+        [HarmonyPatch(typeof(PlayMakerFSM), "OnEnable")]
         private static void OnFsmEnabled(PlayMakerFSM __instance)
         {
             //This line is disgustingly long. No, I'm not doing anything about it
@@ -182,22 +183,23 @@ namespace Silksong.Mods.DoubleBossesMod
                 GameObject doubler = Instantiate(__instance.gameObject, __instance.transform.position, __instance.transform.rotation, __instance.transform.parent);
                 doubler.name += "CLONE";
                 __instance.name += "CLONE";
-               
+
             }
+            ModifyEnemies( __instance );
         }
 
 
         
 
         //Main enemy doubling code. Has a list of game objects to be doubled, and the code for doubling them.
-        private void ModifyEnemies(PlayMakerFSM __instance)
+        private static void ModifyEnemies(PlayMakerFSM __instance)
         {
             String[] Keywords = new string[]
             {
                 "Mossbone Mother",
                 "Mossbone Mother A",
                 "Mossbone Mother B",
-                "Boss Scene",
+                "Bone Flyer Giant",
                 "Lace Boss1",
                 "Lace Boss2 New",
                 "Dancer Control",
@@ -220,7 +222,7 @@ namespace Silksong.Mods.DoubleBossesMod
                 }
             }
 
-            if (isBoss && !__instance.name.Contains("CLONE") && __instance.gameObject.scene != SceneManager.GetActiveScene())
+            if (isBoss && !__instance.name.Contains("CLONE"))
             {
                 GameObject doubler = Instantiate(__instance.gameObject, __instance.transform.position, __instance.transform.rotation, __instance.transform.parent);
                 doubler.name += "CLONE";
@@ -232,4 +234,3 @@ namespace Silksong.Mods.DoubleBossesMod
 
     }
 }
-
