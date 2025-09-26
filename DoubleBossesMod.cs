@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 
 namespace Silksong.Mods.DoubleBossesMod
 {
-    [BepInPlugin("com.eniac.doublebossesmod", "Silksong All Bosses Duplicator", "0.0.1")]
+    [BepInPlugin("com.eniac.doublebossesmod", "Silksong All Bosses Duplicator", "0.0.1d")]
     [BepInProcess("Hollow Knight Silksong.exe")]
     public class DoubleBossesMod : BaseUnityPlugin
     {
@@ -39,6 +39,7 @@ namespace Silksong.Mods.DoubleBossesMod
                     continue;
                 }
                 ModifyEnemies(fsm);
+                ModifyEnemiesPatchVersionTemp(fsm);
 
                 if (fsm.name == "Boss Control" && scene.name == "Abyss Cocoon")
                 {
@@ -159,7 +160,7 @@ namespace Silksong.Mods.DoubleBossesMod
                     var doublerFSMs = doubler.GetComponents<PlayMakerFSM>();
                     foreach (var dfsm in doublerFSMs)
                     {
-                        dfsm.Fsm.SetState("Roar4");
+                        dfsm.Fsm.SetState("Roar 4");
                     }
                 }
             }
@@ -199,7 +200,6 @@ namespace Silksong.Mods.DoubleBossesMod
                 "Mossbone Mother",
                 "Mossbone Mother A",
                 "Mossbone Mother B",
-                "Bone Flyer Giant",
                 "Lace Boss1",
                 "Lace Boss2 New",
                 "Dancer Control",
@@ -208,6 +208,7 @@ namespace Silksong.Mods.DoubleBossesMod
                 "Coral Conch Driller Giant Solo",
                 "Swamp Shaman",
                 "Vampire Gnat Boss Scene",
+                "Vampire Gnat Scene",
                 "Seth",
                 "Coral Warrior Grey"
             }; 
@@ -227,6 +228,19 @@ namespace Silksong.Mods.DoubleBossesMod
                 GameObject doubler = Instantiate(__instance.gameObject, __instance.transform.position, __instance.transform.rotation, __instance.transform.parent);
                 doubler.name += "CLONE";
                 __instance.name += "CLONE"; 
+
+                return;
+            }
+        }
+
+        //Okay, to be honest the entire program could use a rewrite using my newfound knowledge of this game's systems, but I just want a quick and easy patch right now.
+        private static void ModifyEnemiesPatchVersionTemp(PlayMakerFSM __instance)
+        {
+            if (__instance.name == "Boss Scene")
+            {
+                GameObject doubler = Instantiate(__instance.gameObject, __instance.transform.position, __instance.transform.rotation, __instance.transform.parent);
+                doubler.name += "CLONE";
+                __instance.name += "CLONE";
 
                 return;
             }
