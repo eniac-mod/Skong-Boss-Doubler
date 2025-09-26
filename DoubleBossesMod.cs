@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 
 namespace Silksong.Mods.DoubleBossesMod
 {
-    [BepInPlugin("com.eniac.doublebossesmod", "Silksong All Bosses Duplicator", "0.0.1d")]
+    [BepInPlugin("com.eniac.doublebossesmod", "Silksong All Bosses Duplicator", "0.0.1")]
     [BepInProcess("Hollow Knight Silksong.exe")]
     public class DoubleBossesMod : BaseUnityPlugin
     {
